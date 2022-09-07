@@ -41,14 +41,11 @@ public static class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapHealthChecks("/health", new HealthCheckOptions { Predicate = (check) => check.Tags.Contains("Liveliness") });
-            endpoints.MapHealthChecks("/ready", new HealthCheckOptions { Predicate = (check) => check.Tags.Contains("Readiness") });
-            endpoints.MapControllers();
-        });
+        app.MapHealthChecks("/health", new HealthCheckOptions { Predicate = (check) => check.Tags.Contains("Liveliness") });
+        app.MapHealthChecks("/ready", new HealthCheckOptions { Predicate = (check) => check.Tags.Contains("Readiness") });
         
-
+        app.MapControllers();
+        
         app.Run();
 
     }

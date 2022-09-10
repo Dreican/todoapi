@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Prometheus;
 using TodoApi.Models;
 
 namespace TodoAPI;
@@ -38,8 +39,9 @@ public static class Program
             app.UseDeveloperExceptionPage();
         }
         
-        app.UseHttpsRedirection();
-
+        //app.UseHttpsRedirection();
+        app.UseMetricServer();
+        app.UseHttpMetrics();
         app.UseAuthorization();
         app.MapHealthChecks("/health", new HealthCheckOptions { Predicate = (check) => check.Tags.Contains("Liveliness") });
         app.MapHealthChecks("/ready", new HealthCheckOptions { Predicate = (check) => check.Tags.Contains("Readiness") });
